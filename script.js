@@ -199,7 +199,7 @@ function checkAnswer(answer){
 
     if (answer === correct && currentQuestionIndex !== finalQuestionIndex){
         score++;
-        alert("That Is Correct!");
+        alert("Correct!");
         currentQuestionIndex++;
         generateQuizQuestion();
         //display in the results div that the answer is correct.

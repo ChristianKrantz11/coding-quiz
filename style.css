@@ -44,7 +44,7 @@ input{
 button {
     display: block;
     font-family: sans-serif;
-    background-color: #5e6df1;
+    background-color: #0c1a9e;
     border-radius: 10px;
     border: 3px double #cccccc;
     color: #eeeeee;
@@ -81,7 +81,9 @@ button:hover{
     color: #eeeeee;
     font-size: x-large;
     text-shadow: .5px .5px black;
-    text-align: center;
+    position: fixed;
+    top: 0;
+    right: 0;
 }
 #quiz {
     display: none;
