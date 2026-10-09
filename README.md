@@ -1,7 +1,31 @@
-# 04 Web APIs Challenge: Code Quiz
-[Launch Coding Quiz](https://christiankrantz11.github.io/coding-quiz/)
+# Coding Quiz
 
-As you proceed in your career as a web developer, you will probably be asked to complete a coding assessment, which is typically a combination of multiple-choice questions and interactive challenges. Build a timed code quiz with multiple-choice questions. This app will run in the browser and feature dynamically updated HTML and CSS powered by your JavaScript code. It will also feature a clean and polished user interface and be responsive, ensuring that it adapts to multiple screen sizes.
+A timed, multiple-choice quiz on JavaScript fundamentals that runs in the browser. Beat the clock, save your initials, and compare your score on the high-score board.
+
+**[Launch Coding Quiz](https://christiankrantz11.github.io/coding-quiz/)**
+
+## Features
+
+- 7 multiple-choice questions on JavaScript basics
+- 75-second countdown timer
+- Instant "Correct" or "Incorrect" feedback after each answer
+- The game ends when every question is answered or the timer reaches 0
+- Save your initials and score to a high-score board stored in `localStorage`
+- View high scores, clear them, or play again
+
+## Built With
+
+- HTML, CSS, JavaScript (no libraries)
+
+## Running Locally
+
+No build step is needed.
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/ChristianKrantz11/coding-quiz.git
+   ```
+2. Open `index.html` in your browser.
 
 ## User Story
 
@@ -11,17 +35,6 @@ I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
 SO THAT I can gauge my progress compared to my peers
 ```
 
-## Acceptance Criteria
+## Author
 
-```
-GIVEN I am taking a code quiz
-WHEN I click the start button
-THEN a timer starts and I am presented with a question
-WHEN I answer a question
-THEN I am presented with another question
-WHEN I answer a question incorrectly
-THEN time is subtracted from the clock
-WHEN all questions are answered or the timer reaches 0
-THEN the game is over
-WHEN the game is over
-THEN I can save my initials and score
+[ChristianKrantz11](https://github.com/ChristianKrantz11)
