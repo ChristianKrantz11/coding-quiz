@@ -1,8 +1,19 @@
-# Coding Quiz
+<h1 align="center">🧠 Coding Quiz</h1>
 
-A timed, multiple-choice quiz on JavaScript fundamentals that runs in the browser. Beat the clock, save your initials, and compare your score on the high-score board.
+<p align="center">A timed, multiple-choice quiz on JavaScript fundamentals with a high-score board.</p>
 
-**[Launch Coding Quiz](https://christiankrantz11.github.io/coding-quiz/)**
+<p align="center">
+  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&amp;logo=html5&amp;logoColor=white" alt="HTML5">
+  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&amp;logo=css&amp;logoColor=white" alt="CSS3">
+  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&amp;logo=javascript&amp;logoColor=black" alt="JavaScript">
+</p>
+
+<p align="center"><a href="https://christiankrantz11.github.io/coding-quiz/"><strong>🚀 Live Demo</strong></a></p>
+
+<p align="center">
+  <img src="docs/screenshot-start.png" alt="Coding Quiz start screen" width="420">
+  <img src="docs/screenshot-question.png" alt="A quiz question with four answer choices and the countdown timer" width="420">
+</p>
 
 ## Features
 
@@ -29,11 +40,16 @@ No build step is needed.
 
 ## User Story
 
+<details>
+<summary>Original assignment user story</summary>
+
 ```
 AS A coding bootcamp student
 I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
 SO THAT I can gauge my progress compared to my peers
 ```
+
+</details>
 
 ## Author
 
