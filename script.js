@@ -1,217 +1,229 @@
-// Gathering HTML elements for manipulation
-var quizBody = document.getElementById("quiz");
-var resultsEl = document.getElementById("result");
-var finalScoreEl = document.getElementById("finalScore");
-var gameoverDiv = document.getElementById("gameover");
-var questionsEl = document.getElementById("questions");
-var quizTimer = document.getElementById("timer");
-var startQuizButton = document.getElementById("startbtn");
-var startQuizDiv = document.getElementById("startpage");
-var highscoreContainer = document.getElementById("highscoreContainer");
-var highscoreDiv = document.getElementById("high-scorePage");
-var highscoreInputName = document.getElementById("initials");
-var highscoreDisplayName = document.getElementById("highscore-initials");
-var endGameBtns = document.getElementById("endGameBtns");
-var submitScoreBtn = document.getElementById("submitScore");
-var highscoreDisplayScore = document.getElementById("highscore-score");
-var buttonA = document.getElementById("a");
-var buttonB = document.getElementById("b");
-var buttonC = document.getElementById("c");
-var buttonD = document.getElementById("d");
+var QUIZ_TIME = 75;
+var PENALTY = 10;
+var FEEDBACK_MS = 800;
+var HIGHSCORE_KEY = "savedHighscores";
+var MAX_HIGHSCORES = 10;
 
-// Quiz question object
-var quizQuestions = [{
-    question: "Which HTML element does JavaScript go in between?",
-    choiceA: "&lt;javascript&gt;",
-    choiceB: "&lt;js&gt;",
-    choiceC: "&lt;script&gt;",
-    choiceD: "&lt;scripting&gt;",
-    correctAnswer: "c"},
+var questions = [
     {
-    question: "What is the correct syntax for referring to an external script called 'xxx.js'?",
-    choiceA: "&lt;script src=<q>xxx.js</q>&gt;",
-    choiceB: "&lt;script name=<q>xxx.js</q>&gt;",
-    choiceC: "&lt;script href=<q>xxx.js</q>&gt;",
-    choiceD: "&lt;script value=<q>xxx.js</q>&gt;",
-    correctAnswer: "a"},
+        question: "Which HTML element does JavaScript go inside?",
+        choices: ["<javascript>", "<js>", "<script>", "<scripting>"],
+        answer: 2
+    },
     {
-    question: "How do you create a function in JavaScript?",
-    choiceA: "function:myFunction()",
-    choiceB: "function=myFunction()",
-    choiceC: "function myFunction()",
-    choiceD: "myFunction():function",
-    correctAnswer: "c"},
+        question: "What is the correct syntax for referring to an external script called \"xxx.js\"?",
+        choices: ["<script src=\"xxx.js\">", "<script name=\"xxx.js\">", "<script href=\"xxx.js\">", "<script value=\"xxx.js\">"],
+        answer: 0
+    },
     {
-    question: "How would you write <q>Hello World</q> in an alert box?",
-    choiceA: "alert(<q>Hello World</q>)",
-    choiceB: "msgBox(<q>Hello World</q>)",
-    choiceC: "alertBox=<q>Hello World</q>",
-    choiceD: "alertBox(<q>Hello World</q>)",
-    correctAnswer: "a"},
+        question: "How do you create a function in JavaScript?",
+        choices: ["function:myFunction()", "function = myFunction()", "function myFunction()", "myFunction():function"],
+        answer: 2
+    },
     {
-    question: "What is the correct JavaScript syntax to write <q>Hello World</q>?",
-    choiceA: "response.write(<q>Hello World</q>)",
-    choiceB: "<q>Hello World</q>",
-    choiceC: "document.write(<q>Hello World</q>)",
-    choiceD: "(<q>Hello World</q>)",
-    correctAnswer: "c"},  
+        question: "How would you write \"Hello World\" in an alert box?",
+        choices: ["alert(\"Hello World\")", "msgBox(\"Hello World\")", "alertBox = \"Hello World\"", "alertBox(\"Hello World\")"],
+        answer: 0
+    },
     {
-    question: "Does the external JavaScript file have to contain the &lt;script&gt; tag?",
-    choiceA: "Yes",
-    choiceB: "No",
-    choiceC: "Sometimes",
-    choiceD: "Only on Wednesdays",
-    correctAnswer: "b"},
+        question: "Which method adds a new item to the end of an array?",
+        choices: ["array.add()", "array.push()", "array.append()", "array.insert()"],
+        answer: 1
+    },
     {
-    question: "Where is the BEST place to insert your JavaScript tags?",
-    choiceA: "The beginning of your &lt;body&gt; section",
-    choiceB: "The end of your &lt;body&gt; section",
-    choiceC: "The &lt;head&gt; section",
-    choiceD: "None of the above",
-    correctAnswer: "b"},
-        
-    
-    ];
-// Other global variables
-var finalQuestionIndex = quizQuestions.length;
-var currentQuestionIndex = 0;
-var timeLeft = 75;
-var timerInterval;
-var score = 0;
-var correct;
-
-// This function cycles through the object array containing the quiz questions to generate the questions and answers.
-function generateQuizQuestion(){
-    gameoverDiv.style.display = "none";
-    if (currentQuestionIndex === finalQuestionIndex){
-        return showScore();
-    } 
-    var currentQuestion = quizQuestions[currentQuestionIndex];
-    questionsEl.innerHTML = "<p>" + currentQuestion.question + "</p>";
-    buttonA.innerHTML = currentQuestion.choiceA;
-    buttonB.innerHTML = currentQuestion.choiceB;
-    buttonC.innerHTML = currentQuestion.choiceC;
-    buttonD.innerHTML = currentQuestion.choiceD;
-};
-
-// Start Quiz function starts the TimeRanges, hides the start button, and displays the first quiz question.
-function startQuiz(){
-    gameoverDiv.style.display = "none";
-    startQuizDiv.style.display = "none";
-    generateQuizQuestion();
-
-    //Timer
-    timerInterval = setInterval(function() {
-        timeLeft--;
-        quizTimer.textContent = "Time left: " + timeLeft;
-    
-        if(timeLeft === 0) {
-          clearInterval(timerInterval);
-          showScore();
-        }
-      }, 1000);
-    quizBody.style.display = "block";
-}
-// This function is the end page screen that displays your score after either completeing the quiz or upon timer run out
-function showScore(){
-    quizBody.style.display = "none"
-    gameoverDiv.style.display = "flex";
-    clearInterval(timerInterval);
-    highscoreInputName.value = "";
-    finalScoreEl.innerHTML = "You got " + score + " out of " + quizQuestions.length + " correct!";
-}
-
-// On click of the submit button, we run the function highscore that saves and stringifies the array of high scores already saved in local stoage
-// as well as pushing the new user name and score into the array we are saving in local storage. Then it runs the function to show high scores.
-submitScoreBtn.addEventListener("click", function highscore(){
-    
-    
-    if(highscoreInputName.value === "") {
-        alert("Initials cannot be blank");
-        return false;
-    }else{
-        var savedHighscores = JSON.parse(localStorage.getItem("savedHighscores")) || [];
-        var currentUser = highscoreInputName.value.trim();
-        var currentHighscore = {
-            name : currentUser,
-            score : score
-        };
-    
-        gameoverDiv.style.display = "none";
-        highscoreContainer.style.display = "flex";
-        highscoreDiv.style.display = "block";
-        endGameBtns.style.display = "flex";
-        
-        savedHighscores.push(currentHighscore);
-        localStorage.setItem("savedHighscores", JSON.stringify(savedHighscores));
-        generateHighscores();
-
+        question: "Does an external JavaScript file need to contain the <script> tag?",
+        choices: ["Yes", "No", "Sometimes", "Only on Wednesdays"],
+        answer: 1
+    },
+    {
+        question: "Where is the best place to put a <script> tag that doesn't use defer or async?",
+        choices: ["The beginning of the <body>", "The end of the <body>", "Inside the <title>", "After the closing </html> tag"],
+        answer: 1
     }
-    
+];
+
+// Elements
+var screens = {
+    start: document.getElementById("start-screen"),
+    question: document.getElementById("question-screen"),
+    end: document.getElementById("end-screen"),
+    highscores: document.getElementById("highscores-screen")
+};
+var timerEl = document.getElementById("timer");
+var timeLeftEl = document.getElementById("time-left");
+var progressEl = document.getElementById("progress");
+var questionTextEl = document.getElementById("question-text");
+var choicesEl = document.getElementById("choices");
+var feedbackEl = document.getElementById("feedback");
+var finalScoreEl = document.getElementById("final-score");
+var scoreForm = document.getElementById("score-form");
+var initialsInput = document.getElementById("initials");
+var initialsError = document.getElementById("initials-error");
+var highscoreList = document.getElementById("highscore-list");
+var noScoresEl = document.getElementById("no-scores");
+
+// State
+var currentIndex = 0;
+var timeLeft = QUIZ_TIME;
+var correctCount = 0;
+var timerId = null;
+var answering = false;
+
+function showScreen(name) {
+    Object.keys(screens).forEach(function (key) {
+        screens[key].classList.toggle("hidden", key !== name);
+    });
+}
+
+function renderTime() {
+    timeLeftEl.textContent = timeLeft;
+    timerEl.classList.toggle("low", timeLeft <= 10);
+}
+
+function startQuiz() {
+    currentIndex = 0;
+    correctCount = 0;
+    timeLeft = QUIZ_TIME;
+    answering = false;
+    renderTime();
+    showScreen("question");
+    renderQuestion();
+
+    clearInterval(timerId);
+    timerId = setInterval(function () {
+        timeLeft = Math.max(timeLeft - 1, 0);
+        renderTime();
+        if (timeLeft === 0) endQuiz();
+    }, 1000);
+}
+
+function renderQuestion() {
+    var q = questions[currentIndex];
+    progressEl.textContent = "Question " + (currentIndex + 1) + " of " + questions.length;
+    questionTextEl.textContent = q.question;
+    feedbackEl.textContent = "";
+    feedbackEl.className = "feedback";
+    choicesEl.innerHTML = "";
+
+    q.choices.forEach(function (choice, index) {
+        var button = document.createElement("button");
+        button.type = "button";
+        button.className = "choice";
+        button.textContent = (index + 1) + ". " + choice;
+        button.addEventListener("click", function () {
+            checkAnswer(index, button);
+        });
+        choicesEl.appendChild(button);
+    });
+    choicesEl.querySelector("button").focus();
+}
+
+function checkAnswer(index, button) {
+    if (answering) return;
+    answering = true;
+
+    var correct = index === questions[currentIndex].answer;
+    if (correct) {
+        correctCount++;
+        feedbackEl.textContent = "Correct!";
+        feedbackEl.className = "feedback correct";
+        button.classList.add("correct");
+    } else {
+        timeLeft = Math.max(timeLeft - PENALTY, 0);
+        renderTime();
+        feedbackEl.textContent = "Wrong! −" + PENALTY + " seconds";
+        feedbackEl.className = "feedback wrong";
+        button.classList.add("wrong");
+        choicesEl.children[questions[currentIndex].answer].classList.add("correct");
+    }
+
+    Array.prototype.forEach.call(choicesEl.children, function (choiceButton) {
+        choiceButton.disabled = true;
+    });
+
+    setTimeout(function () {
+        answering = false;
+        currentIndex++;
+        if (currentIndex >= questions.length || timeLeft === 0) {
+            endQuiz();
+        } else {
+            renderQuestion();
+        }
+    }, FEEDBACK_MS);
+}
+
+function endQuiz() {
+    clearInterval(timerId);
+    timerId = null;
+    finalScoreEl.textContent =
+        "You answered " + correctCount + " of " + questions.length +
+        " correctly. Your final score is " + timeLeft + ".";
+    initialsInput.value = "";
+    initialsError.textContent = "";
+    showScreen("end");
+    initialsInput.focus();
+}
+
+// ---------- high scores ----------
+
+function loadHighscores() {
+    try {
+        var scores = JSON.parse(localStorage.getItem(HIGHSCORE_KEY));
+        return Array.isArray(scores) ? scores : [];
+    } catch (e) {
+        return [];
+    }
+}
+
+function renderHighscores() {
+    var scores = loadHighscores();
+    highscoreList.innerHTML = "";
+    noScoresEl.classList.toggle("hidden", scores.length > 0);
+    scores.forEach(function (entry) {
+        var item = document.createElement("li");
+        var name = document.createElement("span");
+        name.textContent = entry.name;
+        var score = document.createElement("span");
+        score.className = "score";
+        score.textContent = entry.score;
+        item.appendChild(name);
+        item.appendChild(score);
+        highscoreList.appendChild(item);
+    });
+}
+
+function showHighscores() {
+    clearInterval(timerId);
+    timerId = null;
+    renderHighscores();
+    showScreen("highscores");
+}
+
+scoreForm.addEventListener("submit", function (event) {
+    event.preventDefault();
+    var initials = initialsInput.value.trim().toUpperCase();
+    if (!initials) {
+        initialsError.textContent = "Please enter your initials.";
+        return;
+    }
+
+    var scores = loadHighscores();
+    scores.push({ name: initials, score: timeLeft });
+    scores.sort(function (a, b) { return b.score - a.score; });
+    localStorage.setItem(HIGHSCORE_KEY, JSON.stringify(scores.slice(0, MAX_HIGHSCORES)));
+    showHighscores();
 });
 
-// This function clears the list for the high scores and generates a new high score list from local storage
-function generateHighscores(){
-    highscoreDisplayName.innerHTML = "";
-    highscoreDisplayScore.innerHTML = "";
-    var highscores = JSON.parse(localStorage.getItem("savedHighscores")) || [];
-    for (i=0; i<highscores.length; i++){
-        var newNameSpan = document.createElement("li");
-        var newScoreSpan = document.createElement("li");
-        newNameSpan.textContent = highscores[i].name;
-        newScoreSpan.textContent = highscores[i].score;
-        highscoreDisplayName.appendChild(newNameSpan);
-        highscoreDisplayScore.appendChild(newScoreSpan);
-    }
-}
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("view-highscores").addEventListener("click", showHighscores);
+document.getElementById("back-btn").addEventListener("click", function () {
+    timeLeft = QUIZ_TIME;
+    renderTime();
+    showScreen("start");
+});
+document.getElementById("clear-btn").addEventListener("click", function () {
+    localStorage.removeItem(HIGHSCORE_KEY);
+    renderHighscores();
+});
 
-// This function displays the high scores page while hiding all of the other pages from 
-function showHighscore(){
-    startQuizDiv.style.display = "none"
-    gameoverDiv.style.display = "none";
-    highscoreContainer.style.display = "flex";
-    highscoreDiv.style.display = "block";
-    endGameBtns.style.display = "flex";
-
-    generateHighscores();
-}
-
-// This function clears the local storage of the high scores as well as clearing the text from the high score board
-function clearScore(){
-    window.localStorage.clear();
-    highscoreDisplayName.textContent = "";
-    highscoreDisplayScore.textContent = "";
-}
-
-// This function sets all the variables back to their original values and shows the home page to enable replay of the quiz
-function replayQuiz(){
-    highscoreContainer.style.display = "none";
-    gameoverDiv.style.display = "none";
-    startQuizDiv.style.display = "flex";
-    timeLeft = 76;
-    score = 0;
-    currentQuestionIndex = 0;
-}
-
-// This function checks the response to each answer 
-function checkAnswer(answer){
-    correct = quizQuestions[currentQuestionIndex].correctAnswer;
-
-    if (answer === correct && currentQuestionIndex !== finalQuestionIndex){
-        score++;
-        alert("Correct!");
-        currentQuestionIndex++;
-        generateQuizQuestion();
-        //display in the results div that the answer is correct.
-    }else if (answer !== correct && currentQuestionIndex !== finalQuestionIndex){
-        alert("That Is Incorrect.")
-        currentQuestionIndex++;
-        generateQuizQuestion();
-        //display in the results div that the answer is wrong.
-    }else{
-        showScore();
-    }
-}
-
-// This button starts the quiz!
-startQuizButton.addEventListener("click",startQuiz);
+renderTime();

@@ -3,49 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coding Quiz!</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="description" content="A timed JavaScript fundamentals quiz with a high-score board.">
+    <title>Coding Quiz</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <header class="topbar">
+        <button id="view-highscores" class="link-btn" type="button">View high scores</button>
+        <div id="timer" aria-live="off">Time: <span id="time-left">75</span></div>
+    </header>
 
-        <div id="startpage">
-            <h1>Coding Quiz Challenge!</h1>
-            <h2>Put your coding knowledge to the test.</h2>
-        <button id="startbtn">Start Quiz</button>
-        <button id="startPageHighscore" onclick="showHighscore()">Hall of Fame</button>
-        </div>
+    <main class="container">
+        <!-- Start screen -->
+        <section id="start-screen" class="screen">
+            <h1>Coding Quiz Challenge</h1>
+            <p class="intro">
+                Answer 7 JavaScript questions before the clock runs out.
+                You have 75 seconds, and every wrong answer costs 10 seconds.
+                Your score is the time you have left.
+            </p>
+            <button id="start-btn" class="btn" type="button">Start Quiz</button>
+        </section>
 
-        <div id="quiz">
-            <div id="timer">Time left: </div>
-                <div id="questions"><p>Questions Placeholder</p></div>
-                    <button id="a" onclick="checkAnswer('a')">A</button>
-                    <button id="b" onclick="checkAnswer('b')">B</button>
-                    <button id="c" onclick="checkAnswer('c')">C</button>
-                    <button id="d" onclick="checkAnswer('d')">D</button>
-                <div id="result"></div>
-        </div>
-        <div id="gameover">
+        <!-- Question screen -->
+        <section id="question-screen" class="screen hidden">
+            <p id="progress" class="progress"></p>
+            <h2 id="question-text"></h2>
+            <div id="choices" class="choices"></div>
+            <p id="feedback" class="feedback" role="status" aria-live="polite"></p>
+        </section>
 
-            <div id="finalScore"></div>
-            <input type="text" size = "40" placeholder="Enter you initials for high score" name="intials" id="initials"/>
-            <button id="submitScore">Submit Score</button>
-        </div>
-        <div id=highscoreContainer>
-        <div id="high-scorePage">
-            <div id="highscore-header">
-                <h3>User Initials</h3>
-                <h3>Score</h3>
+        <!-- Game over screen -->
+        <section id="end-screen" class="screen hidden">
+            <h2>All done!</h2>
+            <p id="final-score" class="final-score"></p>
+            <form id="score-form" class="score-form">
+                <label for="initials">Enter your initials:</label>
+                <input type="text" id="initials" maxlength="3" autocomplete="off" required>
+                <button class="btn" type="submit">Save Score</button>
+            </form>
+            <p id="initials-error" class="error" role="alert"></p>
+        </section>
+
+        <!-- High scores screen -->
+        <section id="highscores-screen" class="screen hidden">
+            <h2>High Scores</h2>
+            <ol id="highscore-list" class="highscore-list"></ol>
+            <p id="no-scores" class="muted hidden">No high scores yet. Be the first!</p>
+            <div class="btn-row">
+                <button id="back-btn" class="btn" type="button">Main Menu</button>
+                <button id="clear-btn" class="btn btn-secondary" type="button">Clear High Scores</button>
             </div>
-            <div id = "highscore-initials"></div>
-            <div id = "highscore-score"></div>
-        </div>
-        <div id="endGameBtns">
-            <button id="playAgain" onclick="replayQuiz()">Main Menu</button>
-            <button id="clearHighscore" onclick="clearScore()">Clear Highscores</button>
-        </div>
-    </div>
-    </div>
+        </section>
+    </main>
+
     <script src="script.js"></script>
 </body>
 </html>

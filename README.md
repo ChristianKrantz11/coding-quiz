@@ -17,16 +17,18 @@
 
 ## Features
 
-- 7 multiple-choice questions on JavaScript basics
-- 75-second countdown timer
-- Instant "Correct" or "Incorrect" feedback after each answer
+- 7 multiple-choice questions on JavaScript fundamentals
+- 75-second countdown timer. Every wrong answer costs 10 seconds, and the timer turns red in the final 10 seconds.
+- Instant on-page feedback after each answer. A wrong answer also highlights the correct one.
 - The game ends when every question is answered or the timer reaches 0
-- Save your initials and score to a high-score board stored in `localStorage`
-- View high scores, clear them, or play again
+- Your score is the time you have left. Save it with your initials.
+- High-score board sorted from best to worst, keeping the top 10 in `localStorage`
+- Clear the high scores or play again at any time
+- Keyboard-friendly, with a responsive layout for desktop and mobile
 
 ## Built With
 
-- HTML, CSS, JavaScript (no libraries)
+- HTML, CSS and JavaScript (no libraries)
 
 ## Running Locally
 
